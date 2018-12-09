@@ -1,6 +1,8 @@
 package ru.level3.lesson4.ui;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -12,7 +14,11 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.squareup.picasso.Picasso;
 
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,16 +71,15 @@ public class MainActivity extends MvpAppCompatActivity implements UserView, Repo
     public void setRepos(List<ReposModel> repos) {
 
         String s = "";
-        for (int i=0;i<repos.size();i++){
-            s += repos.get(i).full_name +"\n";
-        }
+        for (ReposModel item : repos)
+            s += item.full_name +"\n";
 
         userReposView.setText(s);
-
     }
 
     @Override
     public void showError(Throwable e) {
+
         Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
         progress.setVisibility(View.GONE);
         content.setVisibility(View.GONE);
@@ -82,14 +87,18 @@ public class MainActivity extends MvpAppCompatActivity implements UserView, Repo
 
     @Override
     public void startLoad() {
+
         progress.setVisibility(View.VISIBLE);
         content.setVisibility(View.GONE);
+
     }
 
     @Override
     public void finishLoad() {
+
         progress.setVisibility(View.GONE);
         content.setVisibility(View.VISIBLE);
+
     }
 
 }
